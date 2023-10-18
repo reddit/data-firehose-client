@@ -8,8 +8,6 @@ require('dotenv').config();
 
 const FIREHOSE_AUTH_KEY = 'x-firehose-key';
 
-program.option('--keep-alive');
-
 program.parse();
 
 async function run() {
@@ -53,7 +51,6 @@ async function listen() {
 
 async function initStream() {
   const httpsAgent = new https.Agent({
-    keepAlive: true,
     rejectUnauthorized: true,
   });
 
@@ -64,9 +61,7 @@ async function initStream() {
     data: {
       // This designates which subscription will be used to filter data to the firehose
       subscriptionId: process.env.FIREHOSE_SUBSCRIPTION_ID,
-    },
-    params: {
-      keep_alive: program.opts().keepAlive,
+      start: process.env.START,
     },
     // This header token is your unique authentication token for the firehose
     headers: { [FIREHOSE_AUTH_KEY]: process.env.FIREHOSE_TOKEN },
