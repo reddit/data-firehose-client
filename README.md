@@ -4,7 +4,7 @@ This is an example client written in Node.js that demonstrates how to connect to
 
 ## Installation
 
-Requires [Node.js](https://www.nodejs.org) 18.18.2 or higher.
+Requires [Node.js](https://www.nodejs.org) 16.x or higher.
 
 To install the client dependencies, run the command:
 
