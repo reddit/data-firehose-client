@@ -29,10 +29,6 @@ For the Subscription ID, you can supply these filters:
   - MOD_ACTION
 - Subreddits
   - Provide as subreddit name (eg. pics) or id (eg. t5_2qh0u)
-- Subreddit Rating
-  - E
-  - M1
-  - M2
 
 Once you've received an auth token and subscript ID, modify your `.env` file.
 
