@@ -36,6 +36,8 @@ Set the value of `FIREHOSE_TOKEN` to the auth token you received.
 
 Set the value of `FIREHOSE_SUBSCRIPTION_ID` to the subscription ID you received.
 
+Set the value of `START` to either a timestamp (can be any timestamp in ISO 8601 date and time format within the last 24 hours from current timestamp) or Id of the last event which was received in firehose. If the value is an empty string, it ll start streaming data from the current timestamp.
+
 ## Usage
 
 `npm start`
