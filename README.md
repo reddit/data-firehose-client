@@ -8,7 +8,7 @@ Requires [Node.js](https://www.nodejs.org) 18.18.2 or higher.
 
 To install the client dependencies, run the command:
 
-`npm install`
+`npm i`
 
 ## Setup
 
