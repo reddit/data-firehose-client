@@ -38,6 +38,8 @@ Set the value of `FIREHOSE_SUBSCRIPTION_ID` to the subscription ID you received.
 
 ## Usage
 
-`npm start`
+The scripts below will start the respective streams, and begin logging received events to stdout. When the connection closes, it will reinitiate. Enter CTRL+C to end the program.
 
-The application will start and begin logging received events to stdout. When the connection closes, it will reinitiate. Enter CTRL+C to end the program.
+
+`npm start` or `npm run firehose` : The application will start the Firehose stream 
+`npm run compliance` : The application will start the Compliance stream

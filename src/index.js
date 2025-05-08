@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const FIREHOSE_AUTH_KEY = 'x-firehose-key';
 
-program.option('--keep-alive');
+program.option('--compliance');
 
 program.parse();
 
@@ -28,7 +28,7 @@ async function run() {
 }
 
 async function listen() {
-  const stream = await initStream();
+  const stream = program.opts().compliance ? await initComplianceStream() : await initFirehoseStream();
   stream
     .on('data', (chunk) => {
       try {
@@ -51,13 +51,8 @@ async function listen() {
     });
 }
 
-async function initStream() {
-  const httpsAgent = new https.Agent({
-    keepAlive: true,
-    rejectUnauthorized: true,
-  });
-
-  const url = `https://${process.env.FIREHOSE_BASE_URL}/firehose`;
+async function initFirehoseStream() {
+  const url = `https://data.reddit.com/firehose`;
   const res = await axios({
     method: 'post',
     url,
@@ -65,17 +60,36 @@ async function initStream() {
       // This designates which subscription will be used to filter data to the firehose
       subscriptionId: process.env.FIREHOSE_SUBSCRIPTION_ID,
     },
-    params: {
-      keep_alive: program.opts().keepAlive,
-    },
     // This header token is your unique authentication token for the firehose
     headers: { [FIREHOSE_AUTH_KEY]: process.env.FIREHOSE_TOKEN },
-    httpsAgent,
     maxRedirects: 0,
     responseType: 'stream',
   });
 
   console.log('Firehose connected. Listening for data...');
+
+  return res.data;
+}
+
+async function initComplianceStream() {
+  const start = new Date(new Date().setDate(new Date().getDate() - 45)); // 45 days ago
+  const end = new Date(); // today
+
+  const url = `https://data.reddit.com/firehose/v1/compliance`;
+  const res = await axios({
+    method: 'post',
+    url,
+    data: {
+      start: start.toISOString(),
+      end: end.toISOString(),
+    },
+    // This header token is your unique authentication token for the firehose
+    headers: { [FIREHOSE_AUTH_KEY]: process.env.FIREHOSE_TOKEN },
+    maxRedirects: 0,
+    responseType: 'stream',
+  });
+
+  console.log('Firehose Compliance Stream connected. Listening for data...');
 
   return res.data;
 }
